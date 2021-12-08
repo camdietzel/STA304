@@ -1,0 +1,53 @@
+Participant,knowledge,owned,outperform,invest_likliness,percent_assets,invest_decision,risk_tolerance,education,income,gender
+1,high,yes,yes,extremely likely,80,cryptocurrency,70,university degree,"20,000-39,999",male
+2,high,yes,yes,extremely likely,40,real estate,80,masters degree,"150,000-199,999",male
+3,moderate,yes,yes,extremely likely,20,cryptocurrency,40,university degree,"20,000-39,999",female
+4,moderate,yes,yes,likely,15,real estate,65,university degree,"100,000-149,999",male
+5,low,no,no,unlikely,0,mutual funds,30,university degree,"20,000-39,999",female
+6,low,no,unsure,moderately likely,0,bonds,25,university degree,"80,000-99,999",male
+7,moderate,no,unsure,moderately likely,0,exchange traded funds,50,masters degree,"40,000-59,999",male
+8,low,no,no,moderately likely,0,real estate,45,university degree,"60,000-79,999",female
+9,moderate,yes,unsure,extremely likely,10,stocks,75,high school diploma,"0-19,999",male
+10,low,no,no,unlikely,0,mutual funds,60,university degree,"40,000-59,999",male
+11,low,yes,no,moderately likely,0,real estate,50,university degree,"0-19,999",male
+12,moderate,yes,yes,extremely likely,30,cryptocurrency,30,university degree,"60,000-79,999",male
+13,high,yes,yes,extremely likely,70,cryptocurrency,50,university degree,"100,000-149,999",female
+14,moderate,yes,unsure,moderately likely,0,exchange traded funds,30,university degree,"100,000-149,999",female
+15,moderate,yes,unsure,moderately likely,2,exchange traded funds,45,university degree,"80,000-99,999",male
+16,low,yes,unsure,moderately likely,0,mutual funds,25,high school diploma,"0-19,999",female
+17,low,no,unsure,unlikely,0,mutual funds,40,university degree,"40,000-59,999",female
+18,high,yes,yes,likely,0,stocks,10,high school diploma,"0-19,999",male
+19,low,no,unsure,unlikely,0,bonds,20,university degree,"60,000-79,999",female
+20,moderate,no,yes,likely,0,stocks,40,college degree,"40,000-59,999",male
+21,moderate,yes,yes,likely,30,stocks,55,masters degree,"80,000-99,999",female
+22,high,yes,yes,extremely likely,75,cryptocurrency,90,university degree,"40,000-59,999",male
+23,low,no,no,unlikely,0,stocks,35,university degree,"80,000-99,999",female
+24,moderate,yes,yes,extremely likely,50,real estate,75,university degree,"20,000-39,999",male
+25,low,no,no,unlikely,,real estate,40,university degree,"60,000-79,999",male
+26,high,yes,yes,moderately likely,2,stocks,40,university degree,"40,000-59,999",female
+27,low,yes,no,moderately likely,1,stocks,45,university degree,"20,000-39,999",female
+28,low,yes,yes,likely,5,stocks,55,university degree,"60,000-79,999",male
+29,low,no,no,unlikely,0,bonds,20,masters degree,"80,000-99,999",male
+30,high,yes,yes,extremely likely,100,cryptocurrency,70,university degree,"100,000-149,999",male
+31,moderate,yes,yes,extremely likely,40,real estate,65,university degree,"150,000-199,999",male
+32,low,no,no,unlikely,0,stocks,30,college degree,"20,000-39,999",female
+33,moderate,yes,unsure,moderately likely,15,exchange traded funds,45,university degree,"60,000-79,999",male
+34,low,no,no,unlikely,0,stocks,40,university degree,"40,000-59,999",male
+35,moderate,no,no,likely,0,stocks,45,university degree,"40,000-59,999",female
+36,moderate,yes,yes,extremely likely,25,cryptocurrency,70,university degree,"40,000-59,999",male
+37,high,yes,yes,extremely likely,80,cryptocurrency,80,university degree,"80,000-99,999",male
+38,moderate,yes,unsure,likely,0,stocks,30,university degree,"20,000-39,999",female
+39,low,no,unsure,moderately likely,0,real estate,40,university degree,"60,000-79,999",male
+40,moderate,yes,yes,extremely likely,40,real estate,65,university degree,"150,000-199,999",male
+41,low,no,no,unlikely,0,stocks,30,college degree,"40,000-59,999",female
+42,moderate,no,unsure,moderately likely,5,exchange traded funds,45,university degree,"60,000-79,999",female
+43,low,no,no,unlikely,0,stocks,40,university degree,"40,000-59,999",male
+44,moderate,yes,no,likely,15,stocks,60,university degree,"80,000-99,999",female
+45,moderate,yes,yes,extremely likely,25,cryptocurrency,70,university degree,"40,000-59,999",male
+46,high,yes,yes,extremely likely,90,cryptocurrency,80,university degree,"80,000-99,999",male
+47,moderate,yes,unsure,likely,0,real estate,30,university degree,"20,000-39,999",female
+48,low,no,unsure,moderately likely,0,real estate,30,university degree,"60,000-79,999",female
+49,high,yes,yes,extremely likely,10,cryptocurrency,65,university degree,"20,000-39,999",male
+50,high,yes,yes,extremely likely,90,cryptocurrency,80,university degree,"80,000-99,999",male
+51,moderate,no,unsure,likely,0,real estate,30,university degree,"60,000-79,999",female
+52,moderate,yes,yes,likely,2,real estate,50,university degree,"60,000-79,999",female
