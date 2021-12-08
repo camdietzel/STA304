@@ -1,0 +1,425 @@
+---
+title: "Property Ownership Type Indicates Building Evaluation Scores"
+author: "Cameron Dietzel - 1003506191"
+subtitle: Assignment 2
+date: "October 24, 2021"
+output:
+  pdf_document: default
+---
+
+```{r, include=FALSE}
+knitr::opts_chunk$set(warning = FALSE, message = FALSE)
+```
+
+
+# Introduction
+
+Toronto, the fastest growing city on the continent, has experienced nearly 7 fold growth since the early 1950's [1]. The booming population has ignited the wide-scale development of apartment buildings to house many of the new residents. As of 2014, the city had over 100,000 units under construction, a figure that is increasing year over year [2]. Ted Kesik, a professor of building science at the University of Toronto, said that many of these new developments are already having to face a harsh reality[2]. Kesik states that majority of apartment buildings are lasting for as little as five years until severe reconstruction and maintenance work is needed [2]. 
+
+As Kesik's statement is a generalization towards all apartment buildings in the city, could the ownership type of the property favor or disfavor his theory? According to *The Conversation*, the majority of poorly maintained buildings are those which provide affordable housing [3]. In Toronto, affordable housing mainly falls under the social or community housing status. These poor conditions are likely due to the fact that developers have an incentive to cut corners when constructing more affordable housing, which may not apply to private housing as it is mainly funded and operated by large foreign institutions.[3]
+
+Therefore, with apartment buildings facing significant deterioration in a short time horizon, and a large discrepancy among the conditions of different property types, how does the city provide regulation to ensure minimum standards are met? This unveils the need for RentSafeTO. RentSafeTO: Apartment Building Standards, is a bylaw enforcement program that ensures that apartment building owners and operators comply with the city building maintenance standards. Owners/operators of apartment buildings with 10 or more units must register and comply with the requirements under the act. This involves regular examinations of the building grounds, and the mechanical and security systems, providing updated evaluation scores once the examination has been conducted. Further analysis is provided for evaluation scores lower than a specified threshold
+
+Finally, with evidence of affordable, older apartment buildings facing rapid deterioration over the lifetime of the building, the questions remain: Is this quality unique to the social/community housing constructions, or do those of the private developments face similar issues? Does the maintenance level of such buildings exceed the rate of deterioration, or do evaluation scores decrease over time? Therefore, the goal of this analysis is to **determine how the evaluation score of a property depends on the ownership type of the property and the year the building was constructed**. The hypothesis here will be that private ownership, and a more recent construction date will result in higher evaluation scores, due to inadequate regulatory maintenance for older and more affordable housing. 
+
+In the following sections, we discuss the the RentSafeTO data used in the analysis, the predictors for the proposed linear regression model, as well as the results which implicate that newer, privately owned buildings tend to have higher evaluation scores. The limitations to our findings are also discussed as well as how to overcome these shortcomings.
+
+\newpage
+# Data
+
+## Data Collection Process
+
+Through the City of Toronto Open Data Portal, RentSafeTO has made available all data for the qualified apartment buildings, as well as the building specifics and evaluation scores throughout the triennial examinations. [4]. As of October 2021, the data encompasses over 8700 apartment properties with construction completion dates ranging from the early 1800's to 2021 [5]. 
+
+The listed buildings registered with RentSafeTO must undergo evaluation at least once every three years [4]. During these evaluations, bylaw enforcement officers inspect up to 20 regions of the building, including common areas, mechanical and security systems, and parking and exterior grounds. Each of the 20 categories is given a score from 1-5, with one being poor condition and 5 being excellent condition. [4] The overall score of the building is the sum total score of each category. If a category does not apply to the particular building at hand, the score is adjusted to prevent inaccuracy and so the building is not penalized. After each region is inspected, the overall score of the building will be an integer value ranging from 0 to 100 inclusively. If the evaluation score for the building is below 50, then the building must undergo a comprehensive inspection and audit of all common areas. If the final evaluation score is between 50 and 65, then the next inspection will take place within one year. If the score is between 66 and 85, the next inspection will take place within two years. Finally, all buildings that receive an evaluation score of 86 or higher will have their next inspection in three years time [16].
+
+Along with the evaluation score for each category (and the sum total score), the inspector notes the building address, the year the apartment was built, the number of units and storeys within the building, as well as the ownership type of the property. The bylaw enforcement officer takes notes and photographs of their examination and uploads their findings to the Toronto's mobile investigation application [16].
+
+The data collection process could lead to some potential bias given the scoring system described above. It is unclear how many bylaw enforcement officers are currently employed by RentSafeTO, however, the qualitative scoring system could vary from officer to officer. Industry standards for building inspection are rapidly changing [6], implying the the career stage of the officer could impact the 1-5 rating given for the conditions of an analyzed region. Newer employees with recent training may be further in line with industry standards, compared to those those in a later career stage.
+
+## Data Summary
+
+### Data Overview
+
+The data is collected using the examination procedure and frequency outlined above. Each of the 20 evaluated categories represent a variable in the data set, as well as the cumulative total for the final evaluation score of the apartment building. The remaining variables within the set consist of the building specifics, being the number of units/storeys, the year the building was constructed, the ownership type of the property, as well as the coordinates of the geographic location. Please note that the dataset is updated weekly which can cause some slight variation in the results if not updated. The important variables are highlighted below.
+
+
+### Variable Overview
+
+The following variables will be used in the analysis.
+
+*Score*
+\newline
+This is a numerical variable demonstrating the most recent sum total evaluation score for the property. Scores range from 0 to 100 with 0 being the lowest score possible and 100 being a perfect score.
+
+*Property Type*
+\newline
+This is a categorical variable, with three categories in total. This is to indicate the ownership status of the apartment building. Properties can be be private, social or community housing. Social housing is a form of housing tenure owned by the government [7], while community housing is provided by not-for-profit organizations [8].
+
+*Year Built*
+\newline
+This is a numerical variable indicating the year the apartment building was initially constructed. The data ranges from the early 1800s to 2021.
+
+*Number of Units*
+\newline
+This is a numerical variable indicating the number of units within the grounds of the apartment building. In order to qualify for the RentSafeTO program standards, properties must have a minimum of 10 units.
+
+### Cleaning Process
+
+Data points that do not contain a metric for each of the four variables identified above have been removed before the analysis is completed. At the time of completion, this included 442 data observations. Also, there is a reported 4111 units for two apartment buildings which is assumed to be an error, given the third greatest number of units is 719. Therefore, 444 data observations are removed in total, leaving 8330 to be analyzed. If a data observation has a missing metric, then the entire building examination (observation) is removed.
+
+The data for the year the apartment building was constructed, the number of units within the apartment, and the current evaluation score of the building were initially input as characters. These variables have been converted to contain integer values in order to summarize the data and run the multiple linear regression model in the following sections.
+
+```{r, include = FALSE}
+
+library(opendatatoronto)
+library(tidyverse)
+
+#Accessing the Data
+
+idoftheonewewant <- search_packages("Apartment Building Evaluation")[1, 'id']
+list_package_resources(idoftheonewewant)
+
+idofthedata <- pull(list_package_resources(idoftheonewewant)[1,"id"],id)
+
+thedata <- get_resource(idofthedata)
+
+# Here you can load in and clean the data (you may need to do the cleaning in a separate R script). 
+
+# You may need additional chunks, in case you want to include some of the cleaning output.
+
+# Notice that the include=FALSE means that the code, and its resulting output, in this chunk will not appear in the pdf.
+
+```
+
+
+
+```{r, include = FALSE}
+
+#cleaning the data
+
+mydata_cleaned <- na.omit(thedata) %>%
+  select(SCORE, YEAR_BUILT, CONFIRMED_UNITS, PROPERTY_TYPE)
+
+#making integers
+mydata_cleaned$SCORE <- as.integer(mydata_cleaned$SCORE)
+mydata_cleaned$YEAR_BUILT <- as.integer(mydata_cleaned$YEAR_BUILT)
+mydata_cleaned$CONFIRMED_UNITS <- as.integer(mydata_cleaned$CONFIRMED_UNITS)
+
+#removing outliers
+
+mydata_new <- mydata_cleaned[-c(which.max(mydata_cleaned$CONFIRMED_UNITS)),]
+
+mydata_final <- mydata_new[-c(which.max(mydata_new$CONFIRMED_UNITS)),]
+
+```
+
+
+### Variable Summaries
+
+Table 1 outlines the important summary measures for each of the three property types.
+
+
+```{r, include = FALSE}
+
+newchart<- mydata_final %>%
+  select(PROPERTY_TYPE, SCORE)
+
+subsetprivate <- subset(newchart, PROPERTY_TYPE == "PRIVATE" )
+summary(subsetprivate$SCORE)
+
+subsetsocial <- subset(newchart, PROPERTY_TYPE == "SOCIAL HOUSING" )
+summary(subsetsocial$SCORE)
+
+subsettchc <- subset(newchart, PROPERTY_TYPE == "TCHC" )
+summary(subsettchc$SCORE)
+
+```
+
+```{r, echo = FALSE}
+library(knitr)
+library(kableExtra)
+library(dplyr)
+
+propertytypetable <- data.frame('Property Type' = c('Private','Social', 'Community'),
+                        "Min" = c('20.0', '51.0', '39.0'),
+                        'First Quartile' = c('64.0','67.0','63.0' ),
+                        'Median' = c('72.0', '75.0', '68.0'),
+                        'Mean' = c('71.8', '74.6', '69.1'),
+                        'Third Quartile' = c('79','81.0', '76.0'),
+                        'Max' = c('100.0','97.0', '96.0'))
+
+propertytypetable %>%
+kable(caption = 'Evaluation Score Summaries for Each Property Type') %>%  
+column_spec (1:5) %>%
+  kable_styling(latex_options = "HOLD_position")
+```
+
+As shown in table 1, the social and community housing properties have the highest and lowest average evaluation scores of 74.6 and 69.1 respectively, while the average score for a private apartment building falls in between the two, at 71.8. The high average social housing evaluation scores indicate the potential to falsify the initial hypothesis that privately owned buildings receive superior maintenance. It should also be noted that the privately owned apartment buildings have the highest spread, which indicates inconsistency among the conditions for such properties.
+
+Although the average evaluation score for social housing properties are the highest, Figure 1 shows that this represents just a small proportion of all apartment buildings.
+
+```{r, echo = FALSE}
+
+# plot 1 - Scores based on property type
+
+mydata_final %>% 
+  ggplot(aes(x = SCORE, fill = PROPERTY_TYPE)) + 
+  geom_bar() + 
+  scale_fill_discrete(name = "Property Type:", labels = c("Private Housing", "Social Housing", "Community Housing")) +
+  labs(title = "Figure 1: Inspection Scores based on Property Type", x = "Inspection Score",
+       y = "Frequency") +
+  theme(legend.position = "top", legend.text=element_text(size=8), legend.title=element_text(size=8),
+        plot.title = element_text(size = 12))
+
+```
+
+With Table 1 showing the summary statistics for the scores of each property type, Figure 1 displays the distribution and frequency of the scores for each. The key takeaway from figure 1 would be that majority of apartment buildings are privately owned, with social housing to be in the minority.
+
+Figure 2 graphs the year each apartment complex was built, compared to the frequency for that year. Again, the data is separated by the three property types.
+
+```{r, echo = FALSE}
+
+# plot 2 -  Year Built vs Property Type
+library(gridExtra)
+library(ggplot2)
+
+mydata_final%>%
+  ggplot(aes(x = YEAR_BUILT, fill = PROPERTY_TYPE)) + 
+    geom_bar() +
+    labs(title = "Figure 2: Year Built Compared to Property Type", x = "Year Built",
+       y = "Frequency") +
+    scale_fill_discrete(name = "Property Type:", labels = c("Private Housing", "Social Housing", "Community Housing")) +
+  theme(legend.position = "top", legend.text=element_text(size=8), legend.title=element_text(size=8),
+        plot.title = element_text(size = 12))
+  
+
+```
+
+Figure 2 demonstrates the frequency of the number of apartment buildings constructed each year, with separation by property type. The key takeaway from this figure would be that the majority of buildings were completed between the 1950's and the 1980's. Furthermore, majority of social and community properties were constructed towards the mid to end of the 20th century, later than the average property within the data. This is due to the fact that the social housing initiative did not commence until 1938 [9], and community housing did not establish presence until the late 1950's [8].
+
+Figure 3 plots the relationship between the year the apartment building was constructed, and their corresponding most recent evaluation score.
+
+```{r, echo = FALSE}
+
+# Plot 3: SCORE vs YEAR BUILT
+mydata_final %>% 
+  ggplot(aes(x=YEAR_BUILT, y = SCORE, color = PROPERTY_TYPE)) + 
+    geom_point() +
+    geom_smooth(method=lm) +
+    labs(title = "Figure 3: Year Built Compared to The Inspection Score \n", x = "Year Built\n",       y = "Score", color = "Property Type\n") +
+    scale_colour_discrete("Property Type") +
+    scale_color_manual(labels = c("Private", "Social", "Community"), values = c("lightcoral", "limegreen", "steelblue")) +
+  theme(legend.position = "top", legend.text=element_text(size=8), legend.title=element_text(size=8),
+        plot.title = element_text(size = 12))
+    
+```
+
+
+Figure 3 displays the relationship between the year the apartment building was constructed and the evaluation score of the building. A line of best fit is drawn separated by property type. The model indicates that there appears to be a weak positive linear relationship between the year the apartment building was constructed and the most recent evaluation score for each property type. In other words, despite large variance about each linear model, newer buildings appear to have higher evaluation scores, which supports the study's hypothesis. For example, the linear model estimates a privately operated construction built in the 2000's would currently have an evaluation score of 5 points higher than if the property was built in the 1950's.
+
+All analysis for this report was programmed using `R version 4.1.1`.
+
+
+# Methods
+
+In order to establish a relation for the building evaluation score, we will use a regression model to predict which types of buildings are more likely to receive a favorable score from the bylaw enforcement officer. As the score variable is numeric with potential values ranging from 0 to 100 inclusively, we can apply a frequentist linear regression model since it is suitable for predicting a numeric variable with multiple predictors [10]. 
+
+The goal of the study is to determine if the year the building was constructed and the property type of the building are reliable predictors for the current evaluation score of the property. Therefore, these two variables will be retained in the model, with the option to add the the number of units within the apartment building as a third predictor. In order to determine which model to select, we will compare the adjusted R-squared for the model with the two initial predictors and the model with all three. The model with the highest adjusted R-squared will be used to run the analysis. The adjusted R-squared describes how well the data fits the model, so therefore the highest value will likely be the most accurate fit [11]. 
+
+Furthermore, we can perform multiple linear regression under the following assumptions. Initially, we must assume a linear relationship between each predictor compared with the outcome variable. Secondly, we assume that the residuals are normally distributed and that each data observation is independent of the next. We also assume that each predictor is independent of one another, to satisfy the non-multicollinearity assumption. Finally, there is assumed constant variance across all values of the predictor variables [12].
+
+Therefore, the proposed frequentist linear regression model will have the following form:
+\newline
+
+$\hat{y}_{score}=\beta_0 + \beta_{YearBuilt}x_{YearBuilt} +$
+$\beta_{Units}x_{Units} + \beta_{PropertyTypeSocial}x_{PropertyTypeSocial} +$
+\newline
+$\beta_{PropertyTypeCommunity}x_{PropertyTypeCommunity}$
+\newline
+
+The constant term, $\beta_0$ represents the intercept of the regression line. The predictors in the proposed model include two numerical variables and one categorical variable. The numeric variables are $x_{YearBuilt}$ which represents the year the building was constructed, and $x_{Units}$ represents the number of units in the building. $\beta_{YearBuilt}$ and $\beta_{Units}$ represent the coefficients for these respective variables in the model. Holding all else constant, each coefficient determines how a unit change in their particular variable corresponds to the output change in the evaluation score of the property.
+
+The ownership type of the property is a categorical variable with three feasible categories: private housing, social housing, and community housing. To input a categorical variable into the model, a reference category must be chosen. In our model, the reference category will be a privately owned property. Therefore, if the property type of a building is private, then $x_{PropertyTypeSocial}$ and $x_{PropertyTypeCommunity}$ are both identically equal to zero. If the property is community housing then the $x_{PropertyTypeCommunity} = 1$ and $x_{PropertyTypeSocial} = 0$, while if the property is social housing then $x_{PropertyTypeCommunity} = 0$ and $x_{PropertyTypeSocial} = 1$. Therefore, the coefficients $\beta_{PropertyTypeSocial}$ and $\beta_{PropertyTypeCommunity}$ represent the respective change in the output evaluation score, relative to the reference category. A positive coefficient indicates that these properties contribute higher scores than an identical privately owned building, with the opposite holding for negative coefficients.
+
+The year the apartment building was constructed, the number of units within the compound, as well as the property type are all reasonable predictors, as evaluation scores likely vary based on these characteristics. For example, the grounds and conditions of an older building may have deteriorated significantly over the years, leading to a lower evaluation score. Apartment buildings with fewer units may receive a higher degree of maintenance due to the the size favor, which could then raise the inspection score. Lastly, it is reasonable to wonder whether the property type of the building has anything to to do with the evaluation score, as social or community housing may not receive the same funding for maintenance issues as that of the private properties.
+
+
+# Results 
+
+As indicated in table 2, the model with the highest adjusted R-squared includes the property type of the building, the year the building was constructed, and the number of units within the property. The property type of the building is a categorical variable with private, social and community ownership distinctions. The year the building was constructed and the number of units are displayed with integer values, so these represent numerical variables.
+
+
+```{r, echo = FALSE}
+library(knitr)
+library(kableExtra)
+library(dplyr)
+
+r2table <- data.frame('Model' = c('Property Type','Year Built', 'Number of Units', 'Adjusted R-Squared'),
+                        "Model1" = c('Included', 'Included', 'Excluded', '0.0473'),
+                        'Model2' = c('Included', 'Included', 'Included', '0.0581'))
+                        
+r2table %>%
+kable(caption = 'Model Selection Based on Highest Adjusted R-Squared') %>%  
+column_spec (1:3) %>%
+kable_styling(latex_options = "HOLD_position")
+```
+
+```{r, include = FALSE}
+
+#THE REGRESSION MODEL
+
+mylinmodel <- lm(SCORE ~ YEAR_BUILT + CONFIRMED_UNITS + PROPERTY_TYPE, data = mydata_final)
+summary(mylinmodel)
+
+mylinmodel1 <- lm(SCORE ~ YEAR_BUILT + PROPERTY_TYPE, data = mydata_final)
+summary(mylinmodel1)
+
+```
+
+Therefore, with these three predictors, I used the `lm()` function in base `R` to derive the estimates of a frequentist linear regression [11]. This model is used to estimate the evaluation score of a property. Table 3 displays the results of the model.
+
+```{r, echo = FALSE}
+library(knitr)
+library(kableExtra)
+library(dplyr)
+
+summary_chart <- summary(mylinmodel)$coefficients
+x <- round(summary_chart, 3)
+
+modeltable1 <- data.frame('Predictor' = c('Intercept','Year Built', 'Number of Units', 'Property Type - Social Housing', 'Property Type - Community Housing'),
+                        "Coefficient" = c(x[1,1], x[2,1], x[3,1], x[4,1], x[5,1]),
+                        'SE' = c(x[1,2], x[2,2], x[3,2], x[4,2], x[5,2]),
+                        't' = c(x[1,3], x[2,3], x[3,3], x[4,3], x[5,3]),
+                        'p' = c('<0.001','<0.001', '<0.001', '0.296', '<0.001'))
+
+modeltable1 %>%
+kable(caption = 'Model Fitted to Estimate Evaluation Score', digits = 4) %>%  
+column_spec (1:5) %>%
+kable_styling(latex_options = "HOLD_position")
+```
+
+Table 3 shows that the year the property was built, the number of units within the development, and the community housing status of the property are all statistically significant predictors of the evaluation score of the property. The results indicate that apartment buildings constructed one year apart, holding all else constant, will find that the newer building have a score of 0.097 units higher than the older building. This provides evidence that newer apartment buildings do receive higher scores, compared to a similar building constructed in the years prior. This result follows directly from figure 3 where the linear trend is plotted.
+
+The model also indicates a large dispute between the evaluation scores of community and private housing. Holding the remaining variables constant, a community housing property will receive an evaluation score of 4.72 units lower than a corresponding private property. This means community housing projects tend to be in worse conditions than those which are privately operated, directly in line with the study's hypothesis. Even though the social housing predictor fails to be statistically significant, the positive coefficient indicates that social housing properties receive more favorable evaluation scores compared to a similar property which is privately owned. This result is contrary to the initial hypothesis. Given table 1, neither of these results come as a surprise as social and community housing have the highest and lowest average evaluation scores respectively.
+
+Although the coefficient for the number of units within the property is near zero, the p value indicates the statistical significance of this being a reliable predictor. As the positive linear relation may seem unreasonable, there appears to be a logical explanation to this discovery. This is because buildings with an increased number of units can afford to have on-site maintenance. This directly results in the quicker completion of maintenance requests and thus, building deterioration can be handled at a more timely occurrence [6]. Therefore as the number of units increases, the likelihood of on-site maintenance increases, which keeps the quality of the building up to bylaw standards and increases the evaluation score of the property.
+
+To reiterate the above points, we will consider an arbitrary building and use the model to determine the expected evaluation score. Consider a community housing property built in 1965 with 100 units.
+
+$\hat{y}_{score}=\beta_0 + \beta_{YearBuilt}x_{YearBuilt}$ 
+$+ \beta_{Units}x_{Units} + \beta_{PropertyTypeSocial}x_{PropertyTypeSocial}$ +
+\newline
+$\beta_{PropertyTypeCommunity}x_{PropertyTypeCommunity}$ 
+\newline
+$= -118.845 + 0.097x_{YearBuilt} + 0.07x_{Units} + 0.411x_{PropertyTypeSocial}$ 
+$-4.73x_{PropertyTypeCommunity}$
+\newline
+$= -118.845 + 0.097(1960) + 0.07(100) - 4.73$
+\newline
+$= 74.54$
+
+Therefore using the linear regression model outlined above, the predicted evaluation score for this property is 74.54.
+
+All analysis for this report was programmed using `R version 4.1.1`.
+
+
+
+# Conclusions
+
+The prior sections analyzed the RentSafeTO data, with an initial hypothesis that newer, privately owned buildings receive higher evaluation scores upon inspection. Using variable summaries, and a multiple linear regression model, the main conclusions can be drawn.
+
+The biggest direct takeaway from the analysis would be the highest average evaluation score of 74.8 belonging to social housing properties, and the lowest average inspection score of 69.1 belonging to community housing properties. Furthermore, the output of the linear regression model shown in table 3 displays that the coefficient for a community housing property type is -4.73. This means that holding the remaining variables constant, a community housing property will have a score 4.73 units lower than a privately owned property, and 4.73+0.41 = 5.14 units lower than a social housing property. Although the model shows that the community housing variable is a reliable predictor, the model does indicate that the social housing status is not.
+
+Another key takeaway from data is the positive linear relationship between the most recent evaluation score and the construction year of the building, as indicated in figure 3. The output from the linear regression model reaffirms this conclusion, finding that the p-value for the building year coefficient is statistically significant.
+
+Overall, the output of the model suggests that the evaluation score of a building depends on the year it was built, the number of units, and whether the building is private or community housing. This result is partially in line with the hypothesis of the study, as there is statistical significance in support of newer buildings yielding higher evaluation scores.
+Although, contrary to the initial hypothesis, the social housing coefficient in the model shows that these properties tend to have slightly higher evaluation scores than properties which are privately owned. The relationship between private and community housing falls directly in line with the hypothesis, as the community property coefficient of -4.73 indicates that the evaluation score of equal properties (in terms of construction year and number of units) will be significantly higher if operated privately.
+
+At a larger scale, the aim of this study is to establish a relationship between which properties receive higher evaluation scores than others. The model suggests that the evaluation scores for privately owned buildings are far superior to those which are community owned. Perhaps due to the nature of community housing being non-profit, there are limited funds available for building maintenance and repairs, compared to those of the for-profit owned properties. This also gives developers an incentive to cut corners, as they may be working with a smaller budget[3]. With the statistical insignificance of the social housing coefficient, further analysis could be conducted to determine how buildings of that property status compare.
+
+
+## Weaknesses
+
+### Dataset Weaknesses
+
+A weakness for the accuracy of the analysis would be the nature of how the scoring system is initially conducted. For each category of analysis, the officer is basing their opinion with a visual qualitative approach. It would be believed that officers trained at a similar point in time would have similar standards, but this does not necessarily apply to officers trained over different decades. The inconsistency among standards for officers trained over different time periods could alter the overall evaluation score of a building.
+
+### Model Weaknesses
+
+The main weakness to the model that can quickly be identified is the low adjusted R-squared value of 5.1%, indicating the data overall does not fit the linear model very precisely. To overcome this, one could look to use the Akaike Information Criteria (AIC) or Bayesian Information Criteria (BIC) [13] with different models, which could provide a better picture as to whether there is a more appropriate set of predictors to choose from.
+
+Furthermore, another potential weakness could be the multiple linear regression choice to run the analysis with. In the model, I assumed that evaluation scores could be any continuous positive number from 0 to 100 inclusively. However, it is more likely that the set of evaluation scores are discrete, taking integer values from 0 to 100. Therefore, with the range of an evaluation score being discrete positive integers, a better suited model could be a poison regression in order to estimate the evaluation score of an arbitrary property [14]. 
+
+## Next Steps
+
+The data and model exposed the poor evaluation scores for community housing properties, which would be of value to look into at a deeper extent. To reiterate table 3, the model suggests community operated properties have an estimated score of nearly 5 points lower than a corresponding privately operated property, holding all else constant. It is recommended that one looks into the particular reasons as to why this is the case. A specific recommendation would be to analyze the examined categories individually to see if there is a common occurrence between property types which are lacking heavily in a specific area. For instance, would combining the community housing property status and the evaluation score of the building's elevator system provide a better estimate of the overall score, than simply the property type alone? As the goal for this analysis is to provide an estimate for the overall evaluation score of an arbitrary property, this procedure could be extended to see if an evaluation score of any subset of the 20 examined categories would be reliable predictors in determining the sum total score.
+
+The model also assumes that there are no instances of multicollinearity, however this may not be the case. Figure 4 plots the number of units within the building compared to the year it was initially constructed.
+
+```{r, echo = FALSE}
+# Plot 4
+mydata_final %>% 
+  ggplot(aes(x=CONFIRMED_UNITS, y = YEAR_BUILT)) + 
+    geom_point() +
+    stat_smooth(method=lm) +
+    labs(title = "Figure 4: Number of Units Compared to Construction Year \n", x = "Number of Units\n", y = "Apartment Builing Construction Year")
+    
+ 
+```
+
+Figure 4 plots the number of units within the building on the x-axis, compared with the  construction year of the building on the y-axis. The relationship indicates the potential presence of multicollinearity as the two variables appear to have a slight positive linear relationship with one another, failing an initial assumption in the multiple linear regression model. In other words, recent builds have an increased number of units compared to buildings from years prior. According to the real estate section in blogTO, only five 150+ meter buildings stood in the city between 1970 and 2000 [15]. This figure is estimated to be north of 40 buildings by 2022 [15]. With the likelihood of taller buildings containing more units, this provides rationale for the relationship between the two predictors. It would be recommended that this relationship is further analyzed.
+
+## Discussion
+
+Overall, generalizations of buildings evaluation scores may be unique for each city. For instance, younger cities may not have a large age disparity in terms of construction dates. Other cities may have better rules and regulations in place in order to prevent the inconsistency among the conditions of the various property types that is seen in Toronto. Nonetheless, for the city of Toronto, the analysis exposes the need for improvements in the quality of maintenance provided to older constructions, and to increase available funding to non-profit organizations in order to eliminate the evaluation score discrepancy for community housed properties.
+
+
+\newpage
+
+# Bibliography
+
+
+1. Rider, D (2020, June 11) *GTA population growth topped Canadian and American cities in 2019*. [https://www.thestar.com/news/city_hall/2020/06/11/gta-population-growth-topped-canadian-and-american-cities-in-2019.html](https://www.thestar.com/news/city_hall/2020/06/11/gta-population-growth-topped-canadian-and-american-cities-in-2019.html). (Last Accessed: October 21, 2021) 
+
+2. Joe, A (2014, Oct. 14) *Condo boom in Toronto is fueling very poorly built projects*. [https://marketbusinessnews.com/condo-boom-toronto-fueling-poorly-built-projects/35604/](https://marketbusinessnews.com/condo-boom-toronto-fueling-poorly-built-projects/35604/). (Last Accessed: October 21, 2021) 
+
+3. Easthope, H (2020) *This is why apartment living is different for the poor*. [https://theconversation.com/this-is-why-apartment-living-is-different-for-the-poor-82069](https://theconversation.com/this-is-why-apartment-living-is-different-for-the-poor-82069). (Last Accessed: October 21, 2021) 
+
+4. City of Toronto (2021, Oct. 18) *About Apartment Building Evaluation*. [https://open.toronto.ca/dataset/apartment-building-evaluation/](https://open.toronto.ca/dataset/apartment-building-evaluation/). (Last Accessed: October 21, 2021) 
+
+5. City of Toronto (2021, Oct.18) *RentSafeTO for Tenants*. [https://www.toronto.ca/community-people/housing-shelter/rental-housing-tenant-information/rental-housing-standards/apartment-building-standards/rentsafeto-for-tenants/](https://www.toronto.ca/community-people/housing-shelter/rental-housing-tenant-information/rental-housing-standards/apartment-building-standards/rentsafeto-for-tenants/). (Last Accessed: October 21, 2021) 
+
+6. Buyers' Choice (2021) *Advantages and Disadvantages of the Home Inspection Industry*. [https://abuyerschoice.com/advantages-disadvantages-home-inspection-industry/](https://abuyerschoice.com/advantages-disadvantages-home-inspection-industry/). (Last Accessed: October 21, 2021) 
+
+7. Ontario Human Rights Commission (2021) *VII. Social housing*. [http://www.ohrc.on.ca/en/policy-human-rights-and-rental-housing/vii-social-housing](http://www.ohrc.on.ca/en/policy-human-rights-and-rental-housing/vii-social-housing). (Last Accessed: October 21, 2021) 
+
+8. Toronto Community Housing (2021) *VII. Social housing*. [https://en.wikipedia.org/wiki/Toronto_Community_Housing](https://en.wikipedia.org/wiki/Toronto_Community_Housing). (Last Accessed: October 21, 2021) 
+
+9. The Canadian Encyclopedia (2021) *Housing and Housing Policy*. [https://www.thecanadianencyclopedia.ca/en/article/housing-and-housing-policy](https://www.thecanadianencyclopedia.ca/en/article/housing-and-housing-policy). (Last Accessed: October 21, 2021) 
+
+10. Verma, J and  Mohammad, I (2017) *Linear Regression: Frequentist and Bayesian*. [https://medium.com/markovian-labs/linear-regression-frequentist-and-bayesian-447f97c8d330](https://medium.com/markovian-labs/linear-regression-frequentist-and-bayesian-447f97c8d330). (Last Accessed: October 21, 2021) 
+
+11. Potters, C (2021, Apr 30) *Linear Regression: Frequentist and Bayesian*. [https://www.investopedia.com/ask/answers/012615/whats-difference-between-rsquared-and-adjusted-rsquared.asp](https://www.investopedia.com/ask/answers/012615/whats-difference-between-rsquared-and-adjusted-rsquared.asp). (Last Accessed: October 21, 2021) 
+
+12. Complete Dissertation (2021) *Assumptions of Multiple Linear Regression*. [https://www.statisticssolutions.com/free-resources/directory-of-statistical-analyses/assumptions-of-multiple-linear-regression/](https://www.statisticssolutions.com/free-resources/directory-of-statistical-analyses/assumptions-of-multiple-linear-regression/). (Last Accessed: October 21, 2021) 
+
+13. Brownlee, J (2019, Oct. 30) *Probabilistic Model Selection with AIC, BIC, and MDL*. [https://machinelearningmastery.com/probabilistic-model-selection-measures/](https://machinelearningmastery.com/probabilistic-model-selection-measures/). (Last Accessed: October 21, 2021) 
+
+14. aerd Statistics (2021) *Probabilistic Model Selection with AIC, BIC, and MDL*. [https://statistics.laerd.com/spss-tutorials/poisson-regression-using-spss-statistics.php](https://machinelearningmastery.com/probabilistic-model-selection-measures/). (Last Accessed: October 21, 2021) 
+
+15. Longwell, K (2021, Aug.) *Toronto Skyscrapers Keep Getting Taller and More are Coming*. [https://www.blogto.com/real-estate-toronto/2021/07/toronto-skyscrapers-taller-more/](https://www.blogto.com/real-estate-toronto/2021/07/toronto-skyscrapers-taller-more/). (Last Accessed: October 21, 2021) 
+
+16. City of Toronto (2021) *RentSafeTO Building Evaluations & Audits*. [https://www.toronto.ca/community-people/housing-shelter/rental-housing-tenant-information/rental-housing-standards/apartment-building-standards/rentsafeto-for-building-owners/rentsafeto-building-evaluations-and-audits/](https://www.toronto.ca/community-people/housing-shelter/rental-housing-tenant-information/rental-housing-standards/apartment-building-standards/rentsafeto-for-building-owners/rentsafeto-building-evaluations-and-audits/). (Last Accessed: October 21, 2021) 
+
+
+
+
+
+
+
+
+
+
+
+
