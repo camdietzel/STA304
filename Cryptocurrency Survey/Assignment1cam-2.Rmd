@@ -1,0 +1,393 @@
+---
+title: "STA304 - Fall 2021"
+author: "Cameron Dietzel - 1003506191"
+subtitle: Assignment 1
+output:
+  pdf_document: default
+---
+
+```{r include=FALSE}
+knitr::opts_chunk$set(warning = FALSE, message = FALSE)
+library(openintro)
+```
+
+
+# Part 1
+
+
+
+### Goal
+
+The cryptocurrency industry has remained the highest performing asset class for two straight years, incurring 800% gains during the 2020 calendar year [1]. Even with such impressive recent history, the global cryptocurrency market capitalization of roughly 1.9 trillion($USD) is expected to more than triple by 2030 [2]. With a bright outlook by many, the question remains: what type of investor does the young cryptocurrency market attract? Does knowledge level or risk tolerance affect one's decision to invest in this market? Do majority of investments come from a specific gender or income class? In this survey, the goal will be to determine any relation between an individuals exposure to the cryptocurrency market, compared to their economic or personal characteristics and qualifications.
+
+### Procedure
+
+In order to collect responses, the survey will be posted across main social media platforms, such as Facebook, Twitter, Instagram, and LinkedIn. The survey will specifically be targeting the working class population, as the elderly have likely not submerged into the young cryptocurrency market. Each social media platform targets a different audience, and so each are needed to gain accurate results. The largest age groups (in years) for Facebook, Twitter, Instagram, and LinkedIn are 25-34, 30-49, 25-34 and 46-55 respectively [3]. This overall age range consists of majority of the target population. Therefore, the sample population will be those who have one of the listed social media accounts. Within this population, those completing the survey would likely be individuals whom I have connected with on these platforms; this is the frame population. It is possible for those not connected with me to complete the survey, but unlikely. The sample will consist of those within this frame population who complete the survey. This sampling procedure is the most effective and efficient with a short time horizon for data collection. It targets a high percentage of the desired population, as over 70% of the Canadian citizens are on a social media platform [3]. The potential drawbacks to this approach would be the limited access to mainly individuals whom I have connected with. Majority of this frame population is young (likely mid twenties) and may have different investment preferences to those in a later stage of life. This will mainly consist of those who are university educated which could lead to some bias in the results.
+
+### The Survey.
+
+Link to survey: [https://www.surveymonkey.com/r/WKHLPRQ](https://www.surveymonkey.com/r/WKHLPRQ) [1].
+
+### Three Questions From The Survey
+
+**Question 1: Which of the following would you be most likely to invest in?**
+\newline
+**1. Cryptocurrency**
+\newline
+**2. Stocks**
+\newline
+**3. Bonds**
+\newline
+**4. Mutual Funds**
+\newline
+**5. Exchange Traded Funds**
+\newline
+**6. Real Estate**
+\newline
+**7. Other**
+\newline
+**8. Hold in cash**
+
+This question gauges the individuals preferences for investments. The listed categories include a variety of asset classes with different risk levels. This question is useful to draw any conclusions on if the recent surge in the cryptocurrency market has caused a greater proportion of individuals to rank cryptocurrency as their most desired asset class, or if the industry remains too young to establish this dominance. This question can also look to discover whether the type of investor the cryptocurrency market attracts truly believes in the future dominance of the industry, or is investing due to the social media hype based around it. A potential downfall to this question would be that the categories mainly put focus on financial investments leaving the 'other' category to be quite broad. Individuals may prefer to invest in memorabilia or rare goods that would all be lumped together. One may also choose to invest in experiences such as vacations, events, or education which are valid responses but of no use to the outcome of the survey.
+
+**Question 2: What is your risk tolerance?**
+\newline
+**Low: 0-20**
+\newline
+**Medium Low: 21-40**
+\newline
+**Medium: 41-60**
+\newline
+**Medium High: 61-80**
+\newline
+**High: 81-100**
+
+The question is meant to gauge the risk appetite of the participant. Cryptocurrencies have a historical 1 year average volatility of roughly 33%, which is significantly higher than any of the other broad asset classes[4]. This question seeks to understand whether only those with high-risk appetite are willing to make the cryptocurrency investment, or if it can attract those with lower risk preferences due to the outstanding market performance over the past several years. It is particularly difficult to gain a metric value for one’s risk tolerance, which could be a potential downfall of this question. There is no foundational basis to compare risk tolerance to, so the (0-100) scale is likely viewed differently from person to person. Further risk preference questions could be asked to get a better understanding of one’s tolerance levels.
+
+ 
+**Question 3: What percent of your liquid investments are currently held in cryptocurrencies?**
+
+The survey seeks to generalize what type of individual is likely to hold cryptocurrency investments. Comparing the individuals response from this question to their income class, gender, knowledge level or academic experience will be particularly useful. This question was formulated to discover the percentage held as oppose to dollar amount, as it provides a better representation of one's portfolio exposure to the cryptocurrency industry. A potential pitfall to the question itself could be the terminology used. Those completing the survey may not have a strong understanding of what a liquid investment is, and so their response to the question may not be accurate. That being said, the question needed to be formulated this way in order to better gain a true sense of exposure such that investments with some difficulty for resale (paintings, shoes, etc) are not included in the calculations. It is also possible that certain people do not know how much of their portfolio is in cryptocurrencies, if their funds are held with a discretionary financial adviser who can trade without the individual's permission.
+
+
+
+
+
+
+
+
+
+
+\newpage
+
+# Part 2
+
+## Data
+
+In order to collect data, the survey was implemented on Survey Monkey and posted on various social media accounts requesting completion (Facebook, Twitter, Instagram, and LinkedIn). After 36 hours, 52 individuals had completed the survey and the link was taken down so results could be processed. The questions were formulated requiring specific responses (i.e an integer number between 0 and 100, inclusively) or categorical variables with a finite list of potential answers. Therefore all responses were of a desired form and so the data did not need to be cleaned. Some participants chose to skip questions and so the NA's had to be removed before the data could be processed.
+
+Although the social media platforms target the ideal age ranges, those whom I have connected with are on the younger side. Therefore the responses likely do not generalize to the working class population on the whole, as age bias is present. Also, majority of these individuals earn above average income (as they are university educated), which could also skew the results. For greater accuracy, the survey would need to have been implemented on the various social media accounts for a longer period of time and better spread to a more diverse group of individuals.
+
+The survey contains ten questions in total; two are numerical and 8 are categorical. Five of such questions gauge the respondents history and view of the cryptocurrency market with the most important variable for the study being the percentage of assets held in cryptocurrency. The remaining five questions are simple personal questions to discover the gender, income, education, etc. of the individual. The most important variables in the study are listed below. After the NA responses were removed, there are a total of 51 valid respondents for the survey.
+\newline
+
+
+1. 'knowledge': categorical variable consisting of four options (high, medium, low, no knowledge) to analyze one's knowledge level of the cryptocurrency market.
+\newline
+2. 'owned': categorical variable where participants have indicated if they have owned, or currently own cryptocurrencies. 
+\newline
+3. 'invest_decision': categorical variable analyzing asset class preferences for investors.
+\newline
+4. 'percent_assets': the percentage of ones liquid assets held in cryptocurrencies.
+\newline
+5. 'risk_tolerance': quantifies the investors risk tolerance on a scale from 0-100, inclusive. 0 would be completely risk averse and 100 would be completely risk seeking.
+\newline
+6. 'gender': the gender of the individual.
+\newline
+7. 'income': the income level of the individual.
+\newline
+
+
+
+<!-- #region tags=["remove_cell"] -->
+
+```{r, include = FALSE}
+getwd()
+#import data
+camsdata <- read.csv("CryptoSurveyResults.csv", header = TRUE, sep = ",")
+#remove NA's
+my_data <- na.omit(camsdata)
+```
+
+
+Table 1 summarizes the important trends in the numerical variables. The average respondent holds 19% of liquid assets in cryptocurrency, and has an average risk tolerance score of 49. A scatterplot of the two numerical variables is plotted below, looking to understand any relation between risk preferences and percentage of assets held in cryptocurrencies.
+
+
+```{r, echo = FALSE}
+library(knitr)
+q = 51
+
+meanpercentage = round(mean(my_data$percent_assets), digits=2)
+meanrisk = round(mean(my_data$risk_tolerance), digits=2)
+sepercentage = round(sd(my_data$percent_assets), digits=2)
+serisk = round(sd(my_data$risk_tolerance), digits=2)
+minpercentage = round(min(my_data$percent_assets), digits=2)
+minrisk = round(min(my_data$risk_tolerance), digits=2)
+maxpercentage = round(max(my_data$percent_assets), digits=2)
+maxrisk = round(max(my_data$risk_tolerance), digits=2)
+
+df <- data.frame(Variable = c('percent_assets','risk_tolerance'),
+                 'Sample Population' = c(51),
+                 Mean = c(meanpercentage,meanrisk),
+                 'Standard Error' = c(sepercentage,serisk),
+                 Min = c(minpercentage,minrisk),
+                 Max = c(maxpercentage,maxrisk))
+
+kable(df, caption = "Numerical Variables Statistical Summary")
+```
+
+<!-- #endregion -->
+
+Figure 1 plots an individuals percentage of assets held in cryptocurrencies compared to their risk tolerance score, with a line of best fit included. As shown, the line of best fit is upward sloping which supports the idea that investors with higher risk preferences have a greater likelihood of holding a higher percentage of cryptocurrency in their portfolio. Cryptocurrency is historically known for being volatile, and even with the historic performance over the past several years, it appears that such performance does not alter the risk preferences of the cryptocurrency investors[4].
+\newline
+
+
+```{r, echo = FALSE, fig.width=8, fig.height=3}
+library(ggplot2)
+#plot 1: Numerical Variables Linear Comparison
+ggplot(my_data, aes(x=risk_tolerance, y=percent_assets)) +
+  geom_point() +
+  geom_smooth(method = lm) +
+  xlab("Risk Tolerance (0-100)") +
+  ylab("Percentage of Assets in Cryptocurrencies") +
+  ggtitle(" Figure 1: Comparing Crytocurrency Holdings to Risk Tolerance")
+```
+
+
+Table 2&3 and Figure 2&3 [7] analyze the important categorical variables in the survey. The tables below indicate the male to female ratio is fairly even, with slightly more males who have completed the survey. It can also be noted that nearly all respondents have at least some knowledge level of the industry, with roughly 63% indicating they have minimally a moderate level of knowledge.
+\newline
+
+```{r, echo = FALSE}
+library(knitr)
+
+cattable1 <- data.frame('Gender' = 'Percentage',
+                        'Male' = c('54.45%'),
+                  'Female' = c('45.55%'),
+                 'Other' = c('0%'),
+                 'Undisclosed' = c('0%'))
+
+
+kable(cattable1, caption = "Gender Representation")
+```
+
+```{r, echo = FALSE}
+library(knitr)
+
+cattable2 <- data.frame('Knowledge' = 'Percentage',
+                        "High" = c('19.61%'),
+                  'Moderate' = c('43.14%'),
+                  'Low' = c('35.29%'),
+                  'No Knowledge' = c('1.96%'))
+
+
+
+kable(cattable2, caption = "Knowledge Level")
+```
+
+The results from figure 2[9] indicate that the cryptocurrency market is the most appealing to those in both the lower and upper income brackets. Individuals with an income closer to the Canadian average tend to be far less likely to have owned cryptocurrency in the past. These results make intuitive sense. Lower income individuals may see risky investments as their only possibility for greater financial success, and higher income individuals may have additional cash that they can afford to lose. Thus, both are likely to increase their holdings of riskier assets, such as cryptocurrencies. The more comfortable middle class worker likely does not feel as forced to make riskier investments, and does also not have the additional funds to waste.
+
+```{r echo = FALSE,fig.width=7.5, fig.height=3.5}
+library(tidyverse)
+library(ggplot2)
+# plot 2: 
+
+positions <- c("0-19,999", "20,000-39,999", "40,000-59,999", "60,000-79,999", "80,000-99,999", "100,000-149,999")
+
+ggplot(my_data, aes(x = income, fill = owned)) + geom_bar(fill = "steelblue") + geom_bar() +
+  scale_fill_manual(values = c("red", "steelblue"), name  = "Owned Cryptocurrencies") +
+  xlab("Income Class ($CAD)") +
+  ylab("Frequency") +
+  ggtitle(" Figure 2: Invested in Cryptocurrencies by Income")+
+  theme(axis.text.x = element_text(angle=340)) + 
+  scale_x_discrete(limits = positions)
+  
+
+```
+
+Figure 3 shows the investment preferences of those who completed the survey, compared to the gender of that individual. The results from the figure indicate that majority of asset classes seem to have an even distribution of male and female representation. The cryptocurrency market appears to indicate a gender bias. It can be noted that the male gender consists of 55% of all individuals in the survey, but 85% of those who recognize cryptocurrency as their most desired asset class. This figure appears quite surprising, however cryptocurrency has indeed historically had a a gender bias. Roughly 66% of cryptocurrency investors are male [5], which supports the surveys discovery. Given the small sample at hand, the 85% figure would likely decline and converge to the industry average as data is collected from more individuals. It should also be noted that no individuals who completed the survey identified as 'other', or preferred not to disclose.
+\newline
+
+```{r echo = FALSE, fig.width=7.5, fig.height=3.5}
+library(tidyverse)
+library(ggplot2)
+# plot 3: 
+
+ggplot(my_data, aes(x = invest_decision, fill = gender)) + 
+  geom_bar(fill = "steelblue") + geom_bar() +
+  scale_fill_manual(values = c("red", "steelblue"), name  = "Gender") +
+  scale_x_discrete(labels = c("Bonds", "Cryptocurrency", "ETF", "Mutual Fund", 
+                             "Real Estate", "Stocks")) + 
+  xlab("Investment Preferences") +
+  ylab("Frequency") +
+  ggtitle("Figure 3: Invester Preferences by Gender")
+
+```
+
+
+The key takeaways from figure 1-3 are as follows. For the numerical data, there appears to be a positive linear relationship between risk tolerance and percentage of investments held in cryptocurrencies. That means cryptocurrencies become more attractive as risk tolerance rises. For the categorical data, the lower and upper income brackets have a much higher percentage of individuals who have invested in crypotcurrencies, compared to those in the income brackets near the nation average. There also appears to be some gender bias in the industry, as the male gender consists of 85% of those who have indicated cryptocurrency as their most desired asset class to invest in.
+
+All analysis for this report was programmed using `R version 4.0.2`. 
+
+\newpage
+
+## Methods
+
+**Hypothesis Test**
+
+The first statistical method used will be the One-Sample t-test for the mean risk tolerance. This test will determine whether the sample mean statistically differs from a specified value [10]. Looking at the target population on the whole, the average investor is slightly risk averse [6]. This would correspond to a risk tolerance rating of roughly 35 on the 0-100 scale, and will be the hypothesized risk tolerance score used for the t-test. If the positive linear relation between risk tolerance and percentage of assets held in cryptocurrency holds true (as indicated in Figure 1), and majority of investors are indeed risk averse, then this could be supporting rationale for investors holding a low percentage of assets in cryptocurrency. The mean is calculated as the average risk tolerance score of all 51 individuals, with the standard error being the deviation about this mean. These values will be used to calculate the test statistic, which indicates how closely the observed sample mean matches the hypothesized mean of 35. The test statistic will indicate a corresponding P-value, which measures how compatible the hypothesized mean is with the data. Generally, a P value of less than 0.05 is considered significant and is low enough to reject the null hypothesis [7]. 
+
+This method is appropriate since the risk tolerance data appears to follow a normal distribution, the scale of 0-100 inclusively is continuous, and each data point is independent of one another, and there does not appear to be any outliers [10]. In other terms, each response does not affect the next, and the results cluster about the sample mean in the pattern of a normal distribution.
+
+**Confidence Interval**
+
+To examine a categorical variable, the 'invest_decision' variable will be converted into a binary indicator variable. This will be used to invoke a 95% confidence interval for the percentage of individuals whose most desired asset class is cryptocurrencies. The variable will indicate a '1', if the participant has chosen cryptocurrency as their top asset class, and '0' otherwise. This test will determine the range of values that we can be 95% certain contain the true mean for the variable. This statistic is important to determine the degree of certainty as to what percentage of individuals prefer the cryptocurrency market to invest in, compared the other asset classes. The sample mean will be the proportion of those with a '1' compared to the entire sample of 51 individuals, while the standard error will capture the deviation about this mean. A t-interval test will be used since the population standard deviation is unknown. This t interval must be calculated at 95% with n-1 = 50 degrees of freedom. The confidence interval is completed under the following assumptions. The data is sampled randomly, the data points are independent and the sample size is sufficiently large [11].
+
+
+\newpage
+## Results
+
+
+Table 4 shows the important metrics for the hypothesis test with the null hypothesis being a mean of 35. The test statistic must first be calculated.
+\newline
+Test Statistic = $\frac{\bar{x}-\mu}{\frac{SE(x)}{\sqrt n}} =$ 
+$\frac{48.32 - 35.00} {\frac{19.20}{\sqrt 51}} = 5.104$
+\newline
+The test statistic of 5.1 corresponds to a P-value of $5.189*10^{-6} < 0.05$. This implies that the P-value is significant, and therefore we reject the null hypothesis that the true mean is 35. With a sample mean of `r round(mean(my_data$risk_tolerance), digits = 2)`, this is not a surprising result. This implies that the true risk tolerance mean of the sample is likely not the industry average level. This is possibly due to the majority of the frame population being the risk seeking younger generation, or the number of cryptocurrency investors in the sample. 
+
+As the goal of the survey is to discover the type of investor the cryptocurrency market attracts, this helps provide some insight into the risk preferences of such investors. As proven with the one sample t-test, the population mean is not representative of those who completed the sample. This is because the sample average is significantly higher than the estimated population mean. Also, 50% of those who have completed the study indicated cryptocurrency ownership while the same holds true for just 14% of the population altogether[13]. Thus, the high risk tolerance from the sample is likely correlated with the high percentage of respondents indicating they have owned cryptocurrency, implying the cryptocurrency market tends to attract those with increased risk preferences.
+\newline
+
+
+```{r, echo = FALSE}
+library(knitr)
+
+applicants = 51
+meanrisktolerance = 48.324
+serisktolerance = 19.205
+nullhypoth = 35.000
+tstatistic = 5.104
+
+hypothtable <- data.frame('Variable' = 'risk_tolerance',
+                          'Sample' = c(applicants),
+                          'Mean' = c(meanrisktolerance),
+                          'Standard Error' = c(serisktolerance),
+                          'Null Hypothesis' = c(nullhypoth),
+                          'Test Statistic' = c(tstatistic),
+                          'P-value' = c('5.189e^-6'))
+
+
+kable(hypothtable, caption = "T-test for True Mean Risk Tolerance of 35")
+```
+
+
+
+
+
+```{r include=FALSE}
+
+# Here you can run a your HT/CIs.
+# Here you can derive the CIs of interest.
+
+applicants = 51
+p = 12
+percent_p = p/applicants
+var_calc = (applicants)/(applicants-1)*percent_p*(1-percent_p)
+sd_calc = sqrt(var_calc)
+lower_boundd = percent_p - 1.7*sd_calc/sqrt(51)
+percent_p
+lower_boundd
+upper_bound = percent_p + 1.7*sd_calc/sqrt(51)
+upper_bound
+
+t.test(my_data$risk_tolerance, mu = 35)
+sd(my_data$risk_tolerance)
+
+```
+
+
+Table 5 observes the key statistics for the confidence interval about the mean percentage of investors whom perfer cryptocurrencies. As indicated in the table, the percentage of those who have chosen the cryptocurrency market as their most desired asset class is `r round(percent_p, digits = 4)*100`% with a standard error of `r round(sd_calc, digits = 4)*100`%. This yields a 95% confidence interval of (`r round(lower_boundd, digits = 4)*100`%,`r round(upper_bound, digits = 4)*100`%). This represents the range for which we can be 95% confident contains the true average percentage of those with cryptocurrency as their most desirable asset class to invest in. The Calculation for the 95% Confidence Interval with 50 degrees of freedom is as follows:
+
+$\bar{x} \pm t(0.05, 50) \frac{SE(x)}{\sqrt n}$ = $0.2353 \pm 1.7 \frac{0.4284}{\sqrt {51}}$
+
+The large range provides some uncertainty as to how this figure contributes to identify the type of investor the market attracts. The sample mean (identified in figure 2) indicates half the respondents have invested in cryptocurrency. If this holds true, and only 15% (lower portion of the confidence interval) indicate cryptocurrency as a top asset class, then the market is likely enticing those who are speculative and investing with limited knowledge or foundational belief in the industry. However, if half the population invest and 30% (upper portion of the confidence interval) indicate that cryptocurrency is a top asset class, then this investor type likely consists of those with a greater knowledge base and are making informed decisions.
+
+```{r, echo = FALSE}
+library(knitr)
+
+l=51
+o=23
+
+ptable <- data.frame(Variable = c('invest_decision'),
+                  'Sample' = c(l),  
+                  'Observations' = c(o),   
+                 'Percentage' = c(round(percent_p, digits = 4)),
+                 'Standard Error' = c(round(sd_calc, digits = 4)),
+                 'Lower Bound' = c(round(lower_boundd, digits = 4)),
+                 'Upper Bound' = c(round(upper_bound, digits = 4)))
+
+kable(ptable, caption = "Confidence interval for mean percentage of investors who prefer cryptocurrency")
+```
+
+To summarize, the statistical methods implemented above have indicated that the cryptocurrency market attracts individuals with a higher risk tolerance. The large error in the confidence interval implies uncertainty as to what the true percentage of those whom prefer the cryptocurrency market is, while if the true mean is low or high indicates different qualities for the investors.
+
+
+
+
+
+
+\newpage
+
+## Bibliography
+
+1. Novak, D (2021, May 04) *Cryptocurrency Is The Best Performing Asset Class*. [https://www.benzinga.com/21/05/20942550/cryptocurrency-is-the-best-performing-asset-class-for-2-years-straight-but-what-does-this-mean-for-y](https://www.benzinga.com/21/05/20942550/cryptocurrency-is-the-best-performing-asset-class-for-2-years-straight-but-what-does-this-mean-for-y). (Last Accessed: Oct. 1 2021) 
+
+2. Gottlinch, M. (2021, Aug 15) *Global Crypto Market will more than triple to $4.94B*. [https://seekingalpha.com/news/3733907-global-crypto-market-will-more-than-triple-to-494b-by-2030-allied-market-research](https://seekingalpha.com/news/3733907-global-crypto-market-will-more-than-triple-to-494b-by-2030-allied-market-research). (Last Accessed: Oct. 1 2021) 
+
+3. Dean, B. (2021, Sept. 01) *How Many People Use Social Media in 2021*. [https://backlinko.com/social-media-users](https://backlinko.com/social-media-users). (Last Accessed: Oct. 1 2021) 
+
+4. Woo, W. (2021, Sept. 30) *Bitcoin Volatility vs Other Assets*. [https://charts.woobull.com/bitcoin-volatility-vs-other-assets/](https://charts.woobull.com/bitcoin-volatility-vs-other-assets/). (Last Accessed: Oct. 1 2021) 
+
+5. Cohen, J. (2021, Aug 30) *Cryptocurrency investing has a big gender problem*. [https://www.cnbc.com/2021/08/30/cryptocurrency-has-a-big-gender-problem.html](https://www.cnbc.com/2021/08/30/cryptocurrency-has-a-big-gender-problem.html). (Last Accessed Oct. 1 2021) 
+
+6. Campbell, J. (1997) *Risk Neutrality*.  [https://www.encyclopedia.com/social-sciences/applied-and-social-sciences-magazines/risk-neutrality](https://www.encyclopedia.com/social-sciences/applied-and-social-sciences-magazines/risk-neutrality). (Last Accessed Oct. 1 2021)
+
+7. Campbell, J. (1997) *r - Order Bars in ggplot2 graph*.  [https://stackoverflow.com/questions/5208679/order-bars-in-ggplot2-bar-graph](https://stackoverflow.com/questions/5208679/order-bars-in-ggplot2-bar-graph). (Last Accessed Oct. 1 2021)
+
+8.  Allaire, J.J., et. el. *Center Plot Title in ggplot2*. [https://stackoverflow.com/questions/40675778/center-plot-title-in-ggplot2](https://stackoverflow.com/questions/40675778/center-plot-title-in-ggplot2). (Last Accessed: Oct. 1, 2021) 
+
+9. Grolemund, G. (2014, July 16) *Function Reference ggplot2*. [https://ggplot2.tidyverse.org/reference/](https://ggplot2.tidyverse.org/reference/). (Last Accessed: May 5, 2021) 
+
+10. Kent State University. (2021, Sept. 29) *One Sample t Test*. [https://libguides.library.kent.edu/SPSS/OneSampletTest](https://libguides.library.kent.edu/SPSS/OneSampletTest). (Last Accessed: Oct 1, 2021) 
+
+11. Bevans, R. (2020, Jul. 17) *Test Statistics*. [https://www.scribbr.com/statistics/test-statistic/](https://www.scribbr.com/statistics/test-statistic/). (Last Accessed: Oct 1, 2021) 
+
+12. Zach. (2021, Jun. 22) *The 6 Confidence Interval Assumptions to Check*. [https://www.statology.org/confidence-interval-assumptions/](https://www.statology.org/confidence-interval-assumptions/). (Last Accessed: Oct 1, 2021) 
+
+13. Alcott, D. (2021, Apr. 21) *14% of Americans Own Crypto*. [https://ca.finance.yahoo.com/news/study-reveals-crypto-biggest-investors-132102315.html/](https://ca.finance.yahoo.com/news/study-reveals-crypto-biggest-investors-132102315.html). (Last Accessed: Oct 1, 2021) 
+
+
+
+\newpage
+
+## Appendix
+
+
+Here is a glimpse of the data set surveyed:
+
+```{r echo=FALSE}
+
+glimpse(my_data)
+
+```
+
+
